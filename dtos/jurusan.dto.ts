@@ -23,3 +23,16 @@ export class JurusanResponses {
     data: JurusanEntity | JurusanEntity[];
     paging?: PagingData;
 }
+
+export class JurusanQueryDTO {
+    term?: string;
+    order?: 'jurusan';
+    sort?: 'asc' | 'desc' = 'asc';
+    page?: number;
+    rowsPerPage?: number;
+}
+
+export class JurusanQueryResult {
+    result: JurusanEntity[] | JurusanEntity;
+    totalRows: number;
+}

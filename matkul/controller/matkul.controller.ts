@@ -1,8 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { type } from 'os';
 import { MatkulDTO, MatkulResponse, MatkulResponses } from 'src/dtos/matkul.dto';
-import MahasiswaEntity from 'src/models/mahasiswa.entity';
 import MatkulEntity from 'src/models/matkul.entity';
 import { ResponseRebuildInterceptor } from 'src/response/response.interceptor';
 import { ApiExceptionResponse } from 'src/response/response.type';
@@ -41,8 +39,8 @@ export class MatkulController {
     }
 
     @Get('paging')
-    @ApiOperation({description: 'API search mahasiswa'})
-    @ApiOkResponse({description: 'If success search mahasiswa', type: MatkulResponse})
+    @ApiOperation({description: 'API search matkul'})
+    @ApiOkResponse({description: 'If success search matkul', type: MatkulResponse})
     @UseInterceptors(ResponseRebuildInterceptor)
     async findWithPaging(
         @Query('term') term?: string,
@@ -54,6 +52,10 @@ export class MatkulController {
         return {data};
     }
 
+    @Get()
+    @ApiOperation({description: 'API List matkul'})
+    @ApiOkResponse({description: 'If success get list of matkul', type: MatkulResponse})
+    @UseInterceptors(ResponseRebuildInterceptor)
     async findAll(): Promise<MatkulResponses> {
         const data = [] = await this.matkulService.findAll();
         return {data};

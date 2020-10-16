@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseInterceptors } from '@nestjs/common';
-import { ApiAcceptedResponse, ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { JurusanDTO, JurusanResponse, JurusanResponses } from 'src/dtos/jurusan.dto';
 import JurusanEntity from 'src/models/jurusan.entity';
 import { ResponseRebuildInterceptor } from 'src/response/response.interceptor';
@@ -47,6 +47,21 @@ export class JurusanController {
     @ApiNoContentResponse({ description: 'Successfully delete jurusan.'})
     async delete(@Param('id') id: string): Promise<any> {
         return await this.jurusanService.delete(id);
+    }
+
+
+    @Get('paging')
+    @ApiOperation({description: 'API search jurusan'})
+    @ApiOkResponse({description: 'If success search jurusan', type: JurusanResponse})
+    @UseInterceptors(ResponseRebuildInterceptor)
+    async findWithPaging(
+        @Query('term') term?: string,
+        @Query('order') order?: 'jurusan',
+        @Query('sort') sort: 'asc' | 'desc' = 'asc',
+    ): Promise<JurusanResponses> {
+        const { result: data = [] } = await this.jurusanService.findWithPaging({term, order, sort, page: 1, rowsPerPage: 3});
+
+        return {data};
     }
 
 }

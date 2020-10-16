@@ -47,7 +47,7 @@ export class MahasiswaController {
         return {data};
     }
 
-    @Get('search')
+    @Get('paging')
     @ApiOperation({description: 'API search mahasiswa'})
     @ApiOkResponse({description: 'If success search mahasiswa', type: MahasiswaResponse})
     @UseInterceptors(ResponseRebuildInterceptor)
@@ -56,7 +56,7 @@ export class MahasiswaController {
         @Query('order') order?: 'name',
         @Query('sort') sort: 'asc' | 'desc' = 'asc',
     ): Promise<MahasiswaResponses> {
-        const { result: data = [] } = await this.mahasiswaService.find({term, order, sort, page: 1, rowsPerPage: 3 });
+        const { result: data = [] } = await this.mahasiswaService.findWithPaging({term, order, sort, page: 1, rowsPerPage: 3 });
 
         return {data};
     }
