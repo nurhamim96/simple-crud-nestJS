@@ -34,7 +34,7 @@ export class MahasiswaService {
 
     async find(queryParams: MahasiswaQueryDTO): Promise<MahasiswaQueryResult> {
         const offset: number = queryParams.page > 1 ? (queryParams.rowsPerPage * (queryParams.page - 1)) : 0;
-        let query: SelectQueryBuilder<MahasiswaEntity> = this.mahasiswaRepository.createQueryBuilder('mahasiswaAlias');
+        let query: SelectQueryBuilder<MahasiswaEntity> = this.mahasiswaRepository.createQueryBuilder('mahasiswaAlias').innerJoinAndSelect('mahasiswaAlias.jurusanId', 'jurusan').innerJoinAndSelect('mahasiswaAlias.matkulId', 'matkul');
 
         if(queryParams.term) {
             let { term } = queryParams;
