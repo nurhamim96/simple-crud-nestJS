@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseIn
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { MahasiswaDTO, MahasiswaResponse, MahasiswaResponses } from 'src/dtos/mahasiswa.dto';
 import MahasiswaEntity from 'src/models/mahasiswa.entity';
-import { PagingData } from 'src/response/response.class';
 import { ResponseRebuildInterceptor } from 'src/response/response.interceptor';
 import { ApiExceptionResponse } from 'src/response/response.type';
 import { MahasiswaService } from '../service/mahasiswa.service';
@@ -54,10 +53,10 @@ export class MahasiswaController {
     @UseInterceptors(ResponseRebuildInterceptor)
     async search(
         @Query('term') term?: string,
-        @Query('order') order?: 'type' | 'name',
+        @Query('order') order?: 'name',
         @Query('sort') sort: 'asc' | 'desc' = 'asc',
     ): Promise<MahasiswaResponses> {
-        const { result: data = [] } = await this.mahasiswaService.find({term, sort, page: 1, rowsPerPage: 3 });
+        const { result: data = [] } = await this.mahasiswaService.find({term, order, sort, page: 1, rowsPerPage: 3 });
 
         return {data};
     }

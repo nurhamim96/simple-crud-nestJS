@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, HttpCode, Param, Post, Put, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseInterceptors } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { type } from 'os';
 import { MatkulDTO, MatkulResponse, MatkulResponses } from 'src/dtos/matkul.dto';
@@ -38,6 +38,20 @@ export class MatkulController {
     @ApiNoContentResponse({description: 'Successfully delete matkul'})
     async delete(@Param('id')id: string): Promise<any> {
         return this.matkulService.delete(id);
+    }
+
+    @Get('paging')
+    @ApiOperation({description: 'API search mahasiswa'})
+    @ApiOkResponse({description: 'If success search mahasiswa', type: MatkulResponse})
+    @UseInterceptors(ResponseRebuildInterceptor)
+    async findWithPaging(
+        @Query('term') term?: string,
+        @Query('order') order?: 'matkul',
+        @Query('sort') sort: 'asc' | 'desc' = 'asc',
+    ): Promise<MatkulResponses> {
+        const { result: data = [] } = await this.matkulService.findWithPaging({term, order, sort, page: 1, rowsPerPage: 3 })
+
+        return {data};
     }
 
     async findAll(): Promise<MatkulResponses> {

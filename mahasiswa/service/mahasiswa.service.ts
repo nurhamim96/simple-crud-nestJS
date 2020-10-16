@@ -60,7 +60,8 @@ export class MahasiswaService {
 
         return {
             result: result[0],
-            totalRows: result[1]
+            totalRows: result[1],
+            
         }
     }
 }

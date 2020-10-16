@@ -21,3 +21,16 @@ export class MatkulResponses {
     data: MatkulEntity | MatkulEntity[];
     paging?: PagingData;
 }
+
+export class MatkulQueryDTO {
+    term?: string;
+    order?: 'matkul';
+    sort?: 'asc' | 'desc' = 'asc';
+    page?: number;
+    rowsPerPage?: number;
+}
+
+export class MatkulQueryResult {
+    result: MatkulEntity[] | MatkulEntity;
+    totalRows: number;
+}
