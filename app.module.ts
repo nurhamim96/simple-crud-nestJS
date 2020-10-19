@@ -8,21 +8,17 @@ import { MatkulModule } from './matkul/matkul.module';
 import MahasiswaEntity from './models/mahasiswa.entity';
 import JurusanEntity from './models/jurusan.entity';
 import MatkulEntity from './models/matkul.entity';
+import ConfigModule from './config/config.module';
+import DatabaseConnectionConfig from './config/database.config';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password:'',
-      database:'db_mahasiswa',
-      entities:[MahasiswaEntity, JurusanEntity, MatkulEntity],
-      synchronize: true,
-      logging: true
+    ConfigModule,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: DatabaseConnectionConfig,
     }),
     MahasiswaModule,
     JurusanModule,
